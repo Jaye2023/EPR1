@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产品管理 - 报价系统</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .table { margin-bottom: 0; }
+    .table th { border-top: none; font-weight: 600; color: #6c757d; font-size: 0.85rem; text-transform: uppercase; }
+    .table td { vertical-align: middle; }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .stat-card .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .stat-card-green {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    .stat-card-orange {
+      background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+    }
+    
+    .status-badge {
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .status-calculated {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status-not-calculated {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      display: none;
+    }
+    .loading-overlay.active {
+      display: flex;
+    }
+    
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+    }
+    
+    .search-input-group {
+      position: relative;
+    }
+    .search-input-group .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+    .search-input-group input {
+      padding-left: 38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="收起/展开侧边栏">
+      <i class="bi bi-chevron-left" id="toggleIcon"></i>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="bi bi-calculator"></i>
+      </div>
+      <div class="sidebar-title">报价系统</div>
+      <div class="sidebar-subtitle">Baojia System</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">主菜单</div>
+      <a class="nav-link" href="/" title="仪表盘">
+        <i class="bi bi-speedometer2"></i>
+        <span>仪表盘</span>
+      </a>
+      <a class="nav-link active" href="/products" title="产品管理">
+        <i class="bi bi-box-seam"></i>
+        <span>产品管理</span>
+      </a>
+      <a class="nav-link" href="/quotes" title="报价单管理">
+        <i class="bi bi-file-earmark-text"></i>
+        <span>报价单管理</span>
+      </a>
+      <a class="nav-link" href="/customers" title="客户管理">
+        <i class="bi bi-people"></i>
+        <span>客户管理</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">基础数据</div>
+
+      <a class="nav-link" href="/wire-specs" title="电线规格">
+        <i class="bi bi-diagram-3"></i>
+        <span>电线规格</span>
+      </a>
+      <a class="nav-link" href="/plugs" title="插头价格">
+        <i class="bi bi-plug"></i>
+        <span>插头价格</span>
+      </a>
+      <a class="nav-link" href="/tail-processings" title="尾部处理">
+        <i class="bi bi-scissors"></i>
+        <span>尾部处理</span>
+      </a>
+      <a class="nav-link" href="/process-cards" title="料号">
+        <i class="bi bi-file-image"></i>
+        <span>料号</span>
+      </a>
+      <a class="nav-link" href="/customer-item-numbers" title="客户料号">
+        <i class="bi bi-barcode"></i>
+        <span>客户料号</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">系统</div>
+
+      <a class="nav-link" href="/salespersons" title="报价人管理">
+        <i class="bi bi-person-badge"></i>
+        <span>报价人管理</span>
+      </a>
+      <a class="nav-link" href="/settings" title="系统设置">
+        <i class="bi bi-gear"></i>
+        <span>系统设置</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person"></i>
+        </div>
+        <div>
+          <div class="user-name" id="sidebarUserName">管理员</div>
+          <div class="user-role" id="sidebarUserRole">系统管理员</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <div class="p-4">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-white px-4 py-2 rounded-lg shadow-sm">
+          <li class="breadcrumb-item"><a href="/">首页</a></li>
+          <li class="breadcrumb-item active" aria-current="page">产品管理</li>
+        </ol>
+      </nav>
+      
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-value" id="statTotal">-</div>
+            <div class="stat-label"><i class="bi bi-box-seam me-1"></i>总产品数</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card stat-card-green">
+            <div class="stat-value" id="statCalculated">-</div>
+            <div class="stat-label"><i class="bi bi-check-circle me-1"></i>已核算单价</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card stat-card-orange">
+            <div class="stat-value" id="statNotCalculated">-</div>
+            <div class="stat-label"><i class="bi bi-clock me-1"></i>未核算单价</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">产品管理</h2>
+          <div class="d-flex gap-2">
+            <a href="/products/new" class="btn btn-primary shadow-sm" title="添加新产品"><i class="bi bi-plus-circle me-2"></i>添加产品</a>
+            <button class="btn btn-outline-success shadow-sm" onclick="calculateAllPrices()" title="自动核算所有产品单价"><i class="bi bi-calculator me-2"></i>自动核算单价</button>
+            <button class="btn btn-outline-primary shadow-sm" onclick="exportProducts()" title="导出Excel"><i class="bi bi-download me-2"></i>导出Excel</button>
+            <label class="btn btn-outline-info shadow-sm" for="importFile" title="导入Excel文件">
+              <i class="bi bi-upload me-2"></i>导入Excel
+            </label>
+            <input type="file" id="importFile" accept=".xlsx,.xls" class="d-none" onchange="handleImport(event)" aria-label="导入Excel文件">
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <div class="search-input-group">
+                  <i class="bi bi-search search-icon"></i>
+                  <input type="text" class="form-control rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent" id="searchInput" placeholder="搜索产品名称或编号...">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <select class="form-select rounded-lg border border-gray-300" id="statusFilter" onchange="loadProducts()">
+                  <option value="">全部状态</option>
+                  <option value="calculated">已核算单价</option>
+                  <option value="not_calculated">未核算单价</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="bg-gray-50">
+                    <th class="py-3 px-4">项目</th>
+                    <th class="py-3 px-4">名称规格</th>
+                    <th class="py-3 px-4">单位</th>
+                    <th class="py-3 px-4">单价</th>
+                    <th class="py-3 px-4">币种</th>
+                    <th class="py-3 px-4">状态</th>
+                    <th class="py-3 px-4">其他</th>
+                    <th class="py-3 px-4">操作</th>
+                  </tr>
+                  <tr class="table-secondary">
+                    <th class="py-2 px-4">ITEM</th>
+                    <th class="py-2 px-4">DESCRITION&SPECIFICATION</th>
+                    <th class="py-2 px-4">UNIT</th>
+                    <th class="py-2 px-4">UNITPRICE</th>
+                    <th class="py-2 px-4">CURRENT</th>
+                    <th class="py-2 px-4">STATUS</th>
+                    <th class="py-2 px-4">REMARKS</th>
+                    <th class="py-2 px-4"></th>
+                  </tr>
+                </thead>
+                <tbody id="productsTable">
+                  <tr><td colspan="8" class="text-center py-8"><div class="spinner-border text-primary" role="status"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div id="paginationInfo" class="text-muted"></div>
+              <nav id="pagination"></nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+      <p class="mt-3 text-muted">处理中...</p>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-lg overflow-hidden">
+        <div class="modal-header bg-gradient-to-r from-red-500 to-orange-500 text-white">
+          <h5 class="modal-title">确认删除</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>确定要删除这个产品吗？此操作无法撤销。</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">删除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/modalStateManager.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/tabs.js"></script>
+  <script>
+    let currentPage = 1;
+    let deleteProductId = null;
+    let deleteModal = null;
+
+    function getAuthHeaders() {
+      return Auth.getHeaders();
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+
+      if (sidebar.classList.contains('collapsed')) {
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+        sessionStorage.setItem('sidebarCollapsed', 'true');
+      } else {
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-left');
+        sessionStorage.setItem('sidebarCollapsed', 'false');
+      }
+    }
+
+    function initSidebarState() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+      const isCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('expanded');
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast alert alert-${type} fade show`;
+      toast.innerHTML = `
+        <div class="d-flex align-items-center">
+          <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info'} me-2"></i>
+          <div>${message}</div>
+          <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function showLoading(show) {
+      const overlay = document.getElementById('loadingOverlay');
+      if (overlay) {
+        overlay.classList.toggle('active', show);
+      }
+    }
+
+    async function loadStats() {
+      try {
+        const response = await fetch('/api/products/stats', { headers: getAuthHeaders() });
+        const stats = await response.json();
+        document.getElementById('statTotal').textContent = stats.total || 0;
+        document.getElementById('statCalculated').textContent = stats.calculated || 0;
+        document.getElementById('statNotCalculated').textContent = stats.notCalculated || 0;
+      } catch (error) {
+        console.error('Failed to load stats:', error);
+      }
+    }
+
+    async function loadProducts(page = 1) {
+      const search = document.getElementById('searchInput').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      currentPage = page;
+
+      try {
+        let url = `/api/products?page=${page}&pageSize=10&search=${encodeURIComponent(search)}`;
+        if (statusFilter) {
+          url += `&status=${statusFilter}`;
+        }
+        
+        const response = await fetch(url, { headers: getAuthHeaders() });
+        const data = await response.json();
+
+        const tbody = document.getElementById('productsTable');
+        if (data.products.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-muted"><i class="bi bi-inbox mb-2 d-block" style="font-size: 3rem;"></i><p>暂无产品数据</p></td></tr>';
+        } else {
+          tbody.innerHTML = data.products.map(p => {
+            const isCalculated = p.unitPrice && p.unitPrice > 0;
+            return `
+            <tr>
+              <td class="py-3 px-4">${p.itemNumber || '-'}</td>
+              <td class="py-3 px-4">${p.description || '-'}</td>
+              <td class="py-3 px-4">${p.unit || 'pcs'}</td>
+              <td class="py-3 px-4">${p.unitPrice ? p.unitPrice.toFixed(2) : '-'}</td>
+              <td class="py-3 px-4">${p.currency || 'RMB'}</td>
+              <td class="py-3 px-4">
+                <span class="status-badge ${isCalculated ? 'status-calculated' : 'status-not-calculated'}">
+                  ${isCalculated ? '已核算' : '未核算'}
+                </span>
+              </td>
+              <td class="py-3 px-4">${p.processCard || p.remarks || '-'}</td>
+              <td class="py-3 px-4">
+                <div class="d-flex gap-1">
+                  <a href="/products/${p.id}" class="btn btn-sm btn-outline-primary" title="查看详情"><i class="bi bi-eye"></i></a>
+                  <a href="/products/${p.id}/edit" class="btn btn-sm btn-outline-secondary" title="编辑产品"><i class="bi bi-pencil"></i></a>
+                  <button class="btn btn-sm btn-outline-danger" onclick="showDeleteModal(${p.id})" title="删除产品"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+          }).join('');
+        }
+
+        document.getElementById('paginationInfo').textContent = `共 ${data.total} 条记录，第 ${data.page} / ${data.totalPages} 页`;
+        renderPagination(data.page, data.totalPages);
+      } catch (error) {
+        console.error('Failed to load products:', error);
+        document.getElementById('productsTable').innerHTML = '<tr><td colspan="8" class="text-center py-8 text-danger"><i class="bi bi-exclamation-triangle mb-2 d-block"></i><p>加载失败，请重试</p></td></tr>';
+      }
+    }
+
+    async function calculateAllPrices() {
+      showLoading(true);
+      try {
+        const response = await fetch('/api/products/calculate-all', { 
+          method: 'POST',
+          headers: getAuthHeaders()
+        });
+        const result = await response.json();
+        if (response.ok) {
+          showToast(`成功核算 ${result.count} 个产品的单价`, 'success');
+          loadProducts(currentPage);
+          loadStats();
+        } else {
+          showToast(result.error || '核算失败', 'error');
+        }
+      } catch (error) {
+        console.error('Failed to calculate prices:', error);
+        showToast('核算失败: ' + error.message, 'error');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function renderPagination(current, total) {
+      if (total <= 1) {
+        document.getElementById('pagination').innerHTML = '';
+        return;
+      }
+
+      let html = '<ul class="pagination mb-0">';
+      html += `<li class="page-item ${current === 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="loadProducts(${current - 1})">上一页</a></li>`;
+
+      for (let i = 1; i <= total; i++) {
+        if (i === 1 || i === total || (i >= current - 2 && i <= current + 2)) {
+          html += `<li class="page-item ${i === current ? 'active' : ''}"><a class="page-link" href="#" onclick="loadProducts(${i})">${i}</a></li>`;
+        } else if (i === current - 3 || i === current + 3) {
+          html += '<li class="page-item"><span class="page-link">...</span></li>';
+        }
+      }
+
+      html += `<li class="page-item ${current === total ? 'disabled' : ''}"><a class="page-link" href="#" onclick="loadProducts(${current + 1})">下一页</a></li>`;
+      html += '</ul>';
+
+      document.getElementById('pagination').innerHTML = html;
+    }
+
+    function showDeleteModal(id) {
+      deleteProductId = id;
+      deleteModal.show();
+    }
+
+    async function handleDelete() {
+      if (!deleteProductId) return;
+
+      try {
+        const response = await fetch(`/api/products/${deleteProductId}`, { 
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (response.ok) {
+          deleteModal.hide();
+          showToast('删除成功', 'success');
+          loadProducts(currentPage);
+          loadStats();
+        } else {
+          const result = await response.json();
+          showToast('删除失败: ' + (result.error || '未知错误'), 'error');
+        }
+      } catch (error) {
+        console.error('Failed to delete:', error);
+        showToast('删除失败: ' + error.message, 'error');
+      }
+    }
+
+    async function handleImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      showLoading(true);
+      try {
+        const headers = getAuthHeaders();
+        delete headers['Content-Type'];
+        
+        const response = await fetch('/api/products/import', {
+          method: 'POST',
+          headers: headers,
+          body: formData
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          showToast(result.message, 'success');
+          loadProducts();
+          loadStats();
+        } else {
+          showToast('导入失败: ' + (result.error || '未知错误'), 'error');
+        }
+      } catch (error) {
+        console.error('Failed to import:', error);
+        showToast('导入失败: ' + error.message, 'error');
+      } finally {
+        showLoading(false);
+      }
+
+      event.target.value = '';
+    }
+
+    async function exportProducts() {
+      const search = document.getElementById('searchInput').value;
+      try {
+        const url = `/api/products/export${search ? '?search=' + encodeURIComponent(search) : ''}`;
+        const response = await fetch(url, { headers: getAuthHeaders() });
+        if (response.ok) {
+          const blob = await response.blob();
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = `products_${new Date().toISOString().split('T')[0]}.xlsx`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(downloadUrl);
+        } else {
+          const result = await response.json();
+          showToast('导出失败: ' + (result.error || '未知错误'), 'error');
+        }
+      } catch (error) {
+        console.error('Failed to export:', error);
+        showToast('导出失败: ' + error.message, 'error');
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') loadProducts();
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authenticated = await Auth.init();
+      if (!authenticated) return;
+      
+      deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      document.getElementById('confirmDelete').addEventListener('click', handleDelete);
+      initSidebarState();
+      loadProducts();
+      loadStats();
+    });
+  </script>
+</body>
+</html>

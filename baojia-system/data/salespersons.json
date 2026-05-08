@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "朱建云",
+    "phone": "13800138000",
+    "email": "zhujy@gdmainland.com",
+    "department": "销售部",
+    "createdAt": "2026-05-05T15:11:04.357Z"
+  },
+  {
+    "id": 2,
+    "name": "张三",
+    "phone": "13800138003",
+    "email": "zhangsan@gdmainland.com",
+    "department": "销售部",
+    "createdAt": "2026-05-05T15:11:04.357Z"
+  }
+]

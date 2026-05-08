@@ -1,0 +1,24 @@
+[
+  {
+    "id": 6,
+    "code": "590-006",
+    "name": "ML-301 HPN 3*18AWG BK 1.75米 总长 KF-09-001 附插头护套 牛皮纸轧带",
+    "description": "51030050/KF-09-001",
+    "productId": 2,
+    "customerItemNumberId": 6,
+    "cadFilePath": "uploads/cad/cad_1778051033772.dwg",
+    "createdAt": "2026-05-06T07:01:37.349Z",
+    "updatedAt": "2026-05-06T07:54:38.473Z"
+  },
+  {
+    "id": 7,
+    "code": "590-007",
+    "name": "ML-302(韩国头) H05RR-F 3X 0.75 尾部脱皮半剥 总长=1.12米 黑色 普通导体",
+    "description": "",
+    "productId": 1,
+    "customerItemNumberId": 7,
+    "cadFilePath": null,
+    "createdAt": "2026-05-07T00:26:14.717Z",
+    "updatedAt": "2026-05-07T06:44:51.420Z"
+  }
+]

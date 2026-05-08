@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统设置 - 报价系统</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .nav-tabs {
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tabs .nav-link {
+      color: #6b7280;
+      font-weight: 500;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 16px;
+      margin-right: 8px;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s ease;
+    }
+    .nav-tabs .nav-link:hover {
+      color: #667eea;
+      background-color: #f3f4f6;
+      border-bottom-color: #d1d5db;
+    }
+    .nav-tabs .nav-link.active {
+      color: #667eea;
+      background-color: #ffffff;
+      border-bottom-color: #667eea;
+    }
+    .nav-tabs .table th { border-top: none; font-weight: 600; color: #6c757d; font-size: 0.85rem; }
+    .table td { vertical-align: middle; }
+    .badge { font-weight: 500; padding: 4px 10px; }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="收起/展开侧边栏">
+      <i class="bi bi-chevron-left" id="toggleIcon"></i>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="bi bi-calculator"></i>
+      </div>
+      <div class="sidebar-title">报价系统</div>
+      <div class="sidebar-subtitle">Baojia System</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">主菜单</div>
+      <a class="nav-link" href="/" title="仪表盘">
+        <i class="bi bi-speedometer2"></i>
+        <span>仪表盘</span>
+      </a>
+      <a class="nav-link" href="/products" title="产品管理">
+        <i class="bi bi-box-seam"></i>
+        <span>产品管理</span>
+      </a>
+      <a class="nav-link" href="/quotes" title="报价单管理">
+        <i class="bi bi-file-earmark-text"></i>
+        <span>报价单管理</span>
+      </a>
+      <a class="nav-link" href="/customers" title="客户管理">
+        <i class="bi bi-people"></i>
+        <span>客户管理</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">基础数据</div>
+
+      <a class="nav-link" href="/wire-specs" title="电线规格">
+        <i class="bi bi-diagram-3"></i>
+        <span>电线规格</span>
+      </a>
+      <a class="nav-link" href="/plugs" title="插头价格">
+        <i class="bi bi-plug"></i>
+        <span>插头价格</span>
+      </a>
+      <a class="nav-link" href="/tail-processings" title="尾部处理">
+        <i class="bi bi-scissors"></i>
+        <span>尾部处理</span>
+      </a>
+      <a class="nav-link" href="/process-cards" title="料号">
+        <i class="bi bi-file-image"></i>
+        <span>料号</span>
+      </a>
+      <a class="nav-link" href="/customer-item-numbers" title="客户料号">
+        <i class="bi bi-barcode"></i>
+        <span>客户料号</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">系统</div>
+
+      <a class="nav-link" href="/salespersons" title="报价人管理">
+        <i class="bi bi-person-badge"></i>
+        <span>报价人管理</span>
+      </a>
+      <a class="nav-link active" href="/settings" title="系统设置">
+        <i class="bi bi-gear"></i>
+        <span>系统设置</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person"></i>
+        </div>
+        <div>
+          <div class="user-name" id="sidebarUserName">管理员</div>
+          <div class="user-role" id="sidebarUserRole">系统管理员</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <div class="container-fluid p-4">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">首页</a></li>
+          <li class="breadcrumb-item active" aria-current="page">系统设置</li>
+        </ol>
+      </nav>
+
+      <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="params-tab" data-bs-toggle="tab" data-bs-target="#params" type="button">
+            <i class="bi bi-sliders me-2"></i>系统参数
+          </button>
+        </li>
+        <li class="nav-item" role="presentation" id="usersTabItem">
+          <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button">
+            <i class="bi bi-people me-2"></i>用户管理
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button">
+            <i class="bi bi-key me-2"></i>修改密码
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="settingsTabContent">
+        <div class="tab-pane fade show active" id="params" role="tabpanel">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title mb-4">价格参数设置</h5>
+              <form id="settingsForm">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">铜价 (元/吨)</label>
+                    <input type="number" class="form-control" id="copperPrice" step="1" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">铜加工费 (元/吨)</label>
+                    <input type="number" class="form-control" id="copperProcessFee" step="1" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">填充材料价格 (元/吨)</label>
+                    <input type="number" class="form-control" id="fillerPrice" step="1" required>
+                  </div>
+                </div>
+
+                <h6 class="mt-4 mb-3">毛利率设置</h6>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">PVC线毛利率</label>
+                    <input type="number" class="form-control" id="profitMarginPVC" step="0.01" min="0.1" max="1" required>
+                    <div class="form-text">例如: 0.85 表示 15% 的毛利率</div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">橡胶线毛利率</label>
+                    <input type="number" class="form-control" id="profitMarginRubber" step="0.01" min="0.1" max="1" required>
+                    <div class="form-text">例如: 0.8 表示 20% 的毛利率</div>
+                  </div>
+                </div>
+
+                <h6 class="mt-4 mb-3">PVC线胶料价格 (元/吨)</h6>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">欧标/国标/日规/台规</label>
+                    <input type="number" class="form-control" id="pvcMaterialPriceEU" step="1" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">美规</label>
+                    <input type="number" class="form-control" id="pvcMaterialPriceUS" step="1" required>
+                  </div>
+                </div>
+
+                <h6 class="mt-4 mb-3">橡胶线胶料价格 (元/吨)</h6>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">欧规橡胶线</label>
+                    <input type="number" class="form-control" id="rubberMaterialPriceEU" step="1" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">美规橡胶线</label>
+                    <input type="number" class="form-control" id="rubberMaterialPriceUS" step="1" required>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-2"></i>保存设置
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="users" role="tabpanel">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title mb-0">用户列表</h5>
+                <button class="btn btn-primary btn-sm" onclick="showAddUserModal()">
+                  <i class="bi bi-plus-lg me-1"></i>添加用户
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>用户名</th>
+                      <th>姓名</th>
+                      <th>邮箱</th>
+                      <th>角色</th>
+                      <th>状态</th>
+                      <th>创建时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="password" role="tabpanel">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title mb-4">修改密码</h5>
+              <form id="passwordForm" style="max-width: 400px;">
+                <div class="mb-3">
+                  <label class="form-label">当前密码</label>
+                  <input type="password" class="form-control" id="oldPassword" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">新密码</label>
+                  <input type="password" class="form-control" id="newPassword" required minlength="6">
+                  <div class="form-text">密码长度至少6位</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">确认新密码</label>
+                  <input type="password" class="form-control" id="confirmPassword" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-lg me-2"></i>修改密码
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalTitle">添加用户</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="userForm">
+            <input type="hidden" id="userId">
+            <div class="mb-3">
+              <label class="form-label">用户名 *</label>
+              <input type="text" class="form-control" id="userUsername" required>
+            </div>
+            <div class="mb-3" id="passwordField">
+              <label class="form-label">密码 *</label>
+              <input type="password" class="form-control" id="userPassword" minlength="6">
+              <div class="form-text">密码长度至少6位</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">姓名 *</label>
+              <input type="text" class="form-control" id="userName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">邮箱</label>
+              <input type="email" class="form-control" id="userEmail">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">角色</label>
+              <select class="form-select" id="userRole">
+                <option value="user">普通用户</option>
+                <option value="admin">管理员</option>
+              </select>
+            </div>
+            <div class="mb-3" id="statusField" style="display: none;">
+              <label class="form-label">状态</label>
+              <select class="form-select" id="userStatus">
+                <option value="active">启用</option>
+                <option value="inactive">禁用</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" onclick="saveUser()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">重置密码</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="resetUserId">
+          <p>为用户 <strong id="resetUserName"></strong> 设置新密码：</p>
+          <div class="mb-3">
+            <label class="form-label">新密码</label>
+            <input type="password" class="form-control" id="resetNewPassword" required minlength="6">
+            <div class="form-text">密码长度至少6位</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" onclick="saveResetPassword()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/tabs.js"></script>
+  <script>
+    let currentUser = null;
+
+    function getAuthHeaders() {
+      return Auth.getHeaders();
+    }
+
+    async function loadCurrentUser() {
+      try {
+        const res = await fetch('/api/auth/me', { headers: getAuthHeaders() });
+        if (!res.ok) {
+          Auth.logout();
+          return;
+        }
+        currentUser = await res.json();
+        document.getElementById('sidebarUserName').textContent = currentUser.name;
+        document.getElementById('sidebarUserRole').textContent = currentUser.role === 'admin' ? '系统管理员' : '普通用户';
+        
+        if (currentUser.role !== 'admin') {
+          document.getElementById('usersTabItem').style.display = 'none';
+        }
+      } catch (error) {
+        console.error('获取用户信息失败:', error);
+      }
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings', { headers: getAuthHeaders() });
+        if (!res.ok) {
+          throw new Error('加载设置失败');
+        }
+        const settings = await res.json();
+        
+        document.getElementById('copperPrice').value = settings.copperPrice || '';
+        document.getElementById('copperProcessFee').value = settings.copperProcessFee || '';
+        document.getElementById('fillerPrice').value = settings.fillerPrice || '';
+        document.getElementById('profitMarginPVC').value = settings.profitMarginPVC || settings.profitMargin || '0.85';
+        document.getElementById('profitMarginRubber').value = settings.profitMarginRubber || settings.profitMargin || '0.8';
+        document.getElementById('pvcMaterialPriceEU').value = settings.pvcMaterialPriceEU || '';
+        document.getElementById('pvcMaterialPriceUS').value = settings.pvcMaterialPriceUS || '';
+        document.getElementById('rubberMaterialPriceEU').value = settings.rubberMaterialPriceEU || '';
+        document.getElementById('rubberMaterialPriceUS').value = settings.rubberMaterialPriceUS || '';
+      } catch (error) {
+        console.error('加载设置失败:', error);
+      }
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      
+      const settings = {
+        copperPrice: parseFloat(document.getElementById('copperPrice').value),
+        copperProcessFee: parseFloat(document.getElementById('copperProcessFee').value),
+        fillerPrice: parseFloat(document.getElementById('fillerPrice').value),
+        profitMarginPVC: parseFloat(document.getElementById('profitMarginPVC').value),
+        profitMarginRubber: parseFloat(document.getElementById('profitMarginRubber').value),
+        pvcMaterialPriceEU: parseFloat(document.getElementById('pvcMaterialPriceEU').value),
+        pvcMaterialPriceUS: parseFloat(document.getElementById('pvcMaterialPriceUS').value),
+        rubberMaterialPriceEU: parseFloat(document.getElementById('rubberMaterialPriceEU').value),
+        rubberMaterialPriceUS: parseFloat(document.getElementById('rubberMaterialPriceUS').value)
+      };
+
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(settings)
+        });
+        
+        if (res.ok) {
+          alert('设置保存成功！');
+        } else {
+          const data = await res.json();
+          alert('保存失败: ' + data.error);
+        }
+      } catch (error) {
+        alert('保存失败: ' + error.message);
+      }
+    }
+
+    async function loadUsers() {
+      if (!currentUser || currentUser.role !== 'admin') return;
+      
+      try {
+        const res = await fetch('/api/auth/users', { headers: getAuthHeaders() });
+        const users = await res.json();
+        
+        const tbody = document.getElementById('usersTable');
+        tbody.innerHTML = users.map(user => `
+          <tr>
+            <td>${user.username}</td>
+            <td>${user.name}</td>
+            <td>${user.email || '-'}</td>
+            <td>${user.role === 'admin' ? '<span class="badge bg-primary">管理员</span>' : '<span class="badge bg-secondary">普通用户</span>'}</td>
+            <td>${user.status === 'active' ? '<span class="badge bg-success">启用</span>' : '<span class="badge bg-danger">禁用</span>'}</td>
+            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-1" onclick="editUser(${user.id})" title="编辑">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-warning me-1" onclick="resetPassword(${user.id}, '${user.name}')" title="重置密码">
+                <i class="bi bi-key"></i>
+              </button>
+              ${user.id !== currentUser.id ? `
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})" title="删除">
+                  <i class="bi bi-trash"></i>
+                </button>
+              ` : ''}
+            </td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('加载用户列表失败:', error);
+      }
+    }
+
+    function showAddUserModal() {
+      document.getElementById('userModalTitle').textContent = '添加用户';
+      document.getElementById('userId').value = '';
+      document.getElementById('userUsername').value = '';
+      document.getElementById('userUsername').disabled = false;
+      document.getElementById('userPassword').value = '';
+      document.getElementById('userPassword').required = true;
+      document.getElementById('passwordField').style.display = 'block';
+      document.getElementById('userName').value = '';
+      document.getElementById('userEmail').value = '';
+      document.getElementById('userRole').value = 'user';
+      document.getElementById('userStatus').value = 'active';
+      document.getElementById('statusField').style.display = 'none';
+      
+      new bootstrap.Modal(document.getElementById('userModal')).show();
+    }
+
+    async function editUser(id) {
+      try {
+        const res = await fetch('/api/auth/users', { headers: getAuthHeaders() });
+        const users = await res.json();
+        const user = users.find(u => u.id === id);
+        
+        if (!user) {
+          alert('用户不存在');
+          return;
+        }
+        
+        document.getElementById('userModalTitle').textContent = '编辑用户';
+        document.getElementById('userId').value = user.id;
+        document.getElementById('userUsername').value = user.username;
+        document.getElementById('userUsername').disabled = true;
+        document.getElementById('userPassword').value = '';
+        document.getElementById('userPassword').required = false;
+        document.getElementById('passwordField').style.display = 'none';
+        document.getElementById('userName').value = user.name;
+        document.getElementById('userEmail').value = user.email || '';
+        document.getElementById('userRole').value = user.role;
+        document.getElementById('userStatus').value = user.status;
+        document.getElementById('statusField').style.display = 'block';
+        
+        new bootstrap.Modal(document.getElementById('userModal')).show();
+      } catch (error) {
+        alert('获取用户信息失败: ' + error.message);
+      }
+    }
+
+    async function saveUser() {
+      const id = document.getElementById('userId').value;
+      const userData = {
+        username: document.getElementById('userUsername').value.trim(),
+        name: document.getElementById('userName').value.trim(),
+        email: document.getElementById('userEmail').value.trim(),
+        role: document.getElementById('userRole').value
+      };
+      
+      if (id) {
+        userData.status = document.getElementById('userStatus').value;
+      } else {
+        userData.password = document.getElementById('userPassword').value;
+        if (!userData.password || userData.password.length < 6) {
+          alert('密码长度至少6位');
+          return;
+        }
+      }
+      
+      try {
+        const url = id ? `/api/auth/users/${id}` : '/api/auth/users';
+        const method = id ? 'PUT' : 'POST';
+        
+        const res = await fetch(url, {
+          method,
+          headers: getAuthHeaders(),
+          body: JSON.stringify(userData)
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+          loadUsers();
+        } else {
+          alert('保存失败: ' + data.error);
+        }
+      } catch (error) {
+        alert('保存失败: ' + error.message);
+      }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('确定要删除该用户吗？')) return;
+      
+      try {
+        const res = await fetch(`/api/auth/users/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          loadUsers();
+        } else {
+          alert('删除失败: ' + data.error);
+        }
+      } catch (error) {
+        alert('删除失败: ' + error.message);
+      }
+    }
+
+    function resetPassword(id, name) {
+      document.getElementById('resetUserId').value = id;
+      document.getElementById('resetUserName').textContent = name;
+      document.getElementById('resetNewPassword').value = '';
+      
+      new bootstrap.Modal(document.getElementById('resetPasswordModal')).show();
+    }
+
+    async function saveResetPassword() {
+      const id = document.getElementById('resetUserId').value;
+      const newPassword = document.getElementById('resetNewPassword').value;
+      
+      if (!newPassword || newPassword.length < 6) {
+        alert('密码长度至少6位');
+        return;
+      }
+      
+      try {
+        const res = await fetch(`/api/auth/users/${id}/password`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ newPassword })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal')).hide();
+          alert('密码重置成功');
+        } else {
+          alert('重置失败: ' + data.error);
+        }
+      } catch (error) {
+        alert('重置失败: ' + error.message);
+      }
+    }
+
+    async function changePassword(e) {
+      e.preventDefault();
+      
+      const oldPassword = document.getElementById('oldPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (newPassword !== confirmPassword) {
+        alert('两次输入的密码不一致');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        alert('密码长度至少6位');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/api/auth/password', {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ oldPassword, newPassword })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('密码修改成功');
+          document.getElementById('passwordForm').reset();
+        } else {
+          alert('修改失败: ' + data.error);
+        }
+      } catch (error) {
+        alert('修改失败: ' + error.message);
+      }
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+
+      if (sidebar.classList.contains('collapsed')) {
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+        sessionStorage.setItem('sidebarCollapsed', 'true');
+      } else {
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-left');
+        sessionStorage.setItem('sidebarCollapsed', 'false');
+      }
+    }
+
+    function initSidebarState() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+      const isCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('expanded');
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+      }
+    }
+
+    document.getElementById('settingsForm').addEventListener('submit', saveSettings);
+    document.getElementById('passwordForm').addEventListener('submit', changePassword);
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authenticated = await Auth.init();
+      if (!authenticated) return;
+      
+      await loadCurrentUser();
+      initSidebarState();
+      loadSettings();
+      
+      if (currentUser && currentUser.role === 'admin') {
+        loadUsers();
+      }
+    });
+  </script>
+</body>
+</html>

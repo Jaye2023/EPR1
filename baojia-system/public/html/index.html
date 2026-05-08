@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>报价系统 - 首页</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <style>
+body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f8f9fa;
+    }.stat-card {
+      padding: 24px;
+      border-radius: 12px;
+      color: white;
+    }
+    .stat-card.products {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+    .stat-card.quotes {
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    }
+    .stat-card.pending {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+    .stat-card.wire-specs {
+      background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    }
+    .stat-icon {
+      font-size: 2.5rem;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="收起/展开侧边栏">
+      <i class="bi bi-chevron-left" id="toggleIcon"></i>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="bi bi-calculator"></i>
+      </div>
+      <div class="sidebar-title">报价系统</div>
+      <div class="sidebar-subtitle">Baojia System</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">主菜单</div>
+      <a class="nav-link active" href="/" title="仪表盘">
+        <i class="bi bi-speedometer2"></i>
+        <span>仪表盘</span>
+      </a>
+      <a class="nav-link" href="/products" title="产品管理">
+        <i class="bi bi-box-seam"></i>
+        <span>产品管理</span>
+      </a>
+      <a class="nav-link" href="/quotes" title="报价单管理">
+        <i class="bi bi-file-earmark-text"></i>
+        <span>报价单管理</span>
+      </a>
+      <a class="nav-link" href="/customers" title="客户管理">
+        <i class="bi bi-people"></i>
+        <span>客户管理</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">基础数据</div>
+
+      <a class="nav-link" href="/wire-specs" title="电线规格">
+        <i class="bi bi-diagram-3"></i>
+        <span>电线规格</span>
+      </a>
+      <a class="nav-link" href="/plugs" title="插头价格">
+        <i class="bi bi-plug"></i>
+        <span>插头价格</span>
+      </a>
+      <a class="nav-link" href="/tail-processings" title="尾部处理">
+        <i class="bi bi-scissors"></i>
+        <span>尾部处理</span>
+      </a>
+      <a class="nav-link" href="/process-cards" title="料号">
+        <i class="bi bi-file-image"></i>
+        <span>料号</span>
+      </a>
+      <a class="nav-link" href="/customer-item-numbers" title="客户料号">
+        <i class="bi bi-tag"></i>
+        <span>客户料号</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">系统</div>
+
+      <a class="nav-link" href="/salespersons" title="报价人管理">
+        <i class="bi bi-person-badge"></i>
+        <span>报价人管理</span>
+      </a>
+      <a class="nav-link" href="/settings" title="系统设置">
+        <i class="bi bi-gear"></i>
+        <span>系统设置</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person"></i>
+        </div>
+        <div>
+          <div class="user-name" id="sidebarUserName">管理员</div>
+          <div class="user-role" id="sidebarUserRole">系统管理</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <div class="p-4">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">首页</li>
+        </ol>
+      </nav>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>仪表盘</h2>
+          <span class="text-muted">报价日期: <span id="currentDate"></span></span>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="card stat-card products">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-2 opacity-75">产品总数</h6>
+                  <h2 class="mb-0" id="totalProducts">0</h2>
+                </div>
+                <i class="bi bi-box-seam stat-icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card quotes">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-2 opacity-75">报价单总数</h6>
+                  <h2 class="mb-0" id="totalQuotes">0</h2>
+                </div>
+                <i class="bi bi-file-earmark-text stat-icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card pending">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-2 opacity-75">待处理报价单</h6>
+                  <h2 class="mb-0" id="pendingQuotes">0</h2>
+                </div>
+                <i class="bi bi-hourglass-split stat-icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stat-card wire-specs">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-2 opacity-75">电线规格</h6>
+                  <h2 class="mb-0" id="totalWireSpecs">0</h2>
+                </div>
+                <i class="bi bi-cable stat-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-white">
+                <h5 class="mb-0">快捷操作</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2">
+                  <a href="/quotes/new" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>新建报价单
+                  </a>
+                  <a href="/products/new" class="btn btn-outline-primary">
+                    <i class="bi bi-plus-circle me-2"></i>添加产品
+                  </a>
+                  <a href="/products" class="btn btn-outline-primary">
+                    <i class="bi bi-upload me-2"></i>导入Excel产品
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-white">
+                <h5 class="mb-0">最近报价单</h5>
+              </div>
+              <div class="card-body">
+                <div id="recentQuotes" class="list-group list-group-flush">
+                  <div class="text-center text-muted py-3">
+                    <i class="bi bi-hourglass-split" style="font-size: 2rem;"></i>
+                    <p class="mb-0 mt-2">暂无报价单</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/tabs.js"></script>
+  <script src="/js/modalStateManager.js"></script>
+  <script>
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-CN');
+
+    function getAuthHeaders() {
+      return Auth.getHeaders();
+    }
+
+    async function loadDashboard() {
+      try {
+        const [productsRes, quotesRes, wireSpecsRes] = await Promise.all([
+          fetch('/api/products?pageSize=1', { headers: getAuthHeaders() }),
+          fetch('/api/quotes?pageSize=100', { headers: getAuthHeaders() }),
+          fetch('/api/wire-specs', { headers: getAuthHeaders() })
+        ]);
+
+        const productsData = await productsRes.json();
+        const quotesData = await quotesRes.json();
+        const wireSpecsData = await wireSpecsRes.json();
+
+        document.getElementById('totalProducts').textContent = productsData.total || 0;
+        document.getElementById('totalQuotes').textContent = quotesData.total || 0;
+        document.getElementById('totalWireSpecs').textContent = wireSpecsData.total || 0;
+
+        const pendingCount = quotesData.quotes ? quotesData.quotes.filter(q => q.status === 'draft').length : 0;
+        document.getElementById('pendingQuotes').textContent = pendingCount;
+
+        if (quotesData.quotes && quotesData.quotes.length > 0) {
+          const recentHtml = quotesData.quotes.slice(0, 5).map(q => `
+            <a href="/quotes/${q.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+              <div>
+                <strong>${q.quoteNumber}</strong>
+                <small class="d-block text-muted">${q.customerName || '未指定客户'}</small>
+              </div>
+              <span class="badge bg-${getStatusColor(q.status)}">${getStatusText(q.status)}</span>
+            </a>
+          `).join('');
+          document.getElementById('recentQuotes').innerHTML = recentHtml;
+        }
+      } catch (error) {
+        console.error('Failed to load dashboard:', error);
+      }
+    }
+
+    function getStatusColor(status) {
+      const colors = {
+        draft: 'secondary',
+        confirmed: 'primary',
+        sent: 'info',
+        expired: 'danger'
+      };
+      return colors[status] || 'secondary';
+    }
+
+    function getStatusText(status) {
+      const texts = {
+        draft: '草稿',
+        confirmed: '已确认',
+        sent: '已发送',
+        expired: '已过期'
+      };
+      return texts[status] || status;
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+
+      if (sidebar.classList.contains('collapsed')) {
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+        sessionStorage.setItem('sidebarCollapsed', 'true');
+      } else {
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-left');
+        sessionStorage.setItem('sidebarCollapsed', 'false');
+      }
+    }
+
+    function initSidebarState() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+      const isCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('expanded');
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authenticated = await Auth.init();
+      if (authenticated) {
+        initSidebarState();
+        loadDashboard();
+      }
+    });
+  </script>
+</body>
+</html>
+

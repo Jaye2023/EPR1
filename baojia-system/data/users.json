@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "admin123",
+    "name": "管理员",
+    "email": "admin@gdmainland.com",
+    "role": "admin",
+    "status": "active",
+    "createdAt": "2026-05-06T00:54:48.291Z"
+  }
+]

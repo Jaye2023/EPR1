@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "田森",
+    "contactPerson": "覃小姐",
+    "phone": "13800138001",
+    "email": "contact@customera.com",
+    "address": "广东省中山市",
+    "shippingAddress": "广东省中山市XX工业区XX路XX号",
+    "paymentMethod": "月结 60 天（以电汇或银行承兑汇票结清）",
+    "attachments": [],
+    "createdAt": "2026-05-05T15:26:20.769Z",
+    "updatedAt": "2026-05-07T12:56:22.883Z"
+  },
+  {
+    "id": 2,
+    "name": "客户B",
+    "contactPerson": "李先生",
+    "phone": "13800138002",
+    "email": "contact@customerb.com",
+    "address": "广东省广州市",
+    "shippingAddress": "广东省广州市XX区XX路XX号",
+    "paymentMethod": "月结 30 天（电汇）",
+    "attachments": [],
+    "createdAt": "2026-05-05T15:26:20.770Z"
+  }
+]

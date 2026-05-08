@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "customerId": 1,
+    "productId": null,
+    "itemNumber": "CUST-001",
+    "description": "客户料号示例1",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "customerId": 1,
+    "productId": null,
+    "itemNumber": "CUST-002",
+    "description": "客户料号示例2",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "customerId": 2,
+    "productId": null,
+    "itemNumber": "VIP-001",
+    "description": "VIP客户料号1",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "customerId": 2,
+    "productId": null,
+    "itemNumber": "VIP-002",
+    "description": "VIP客户料号2",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "customerId": 3,
+    "productId": null,
+    "itemNumber": "OEM-001",
+    "description": "OEM客户专用料号",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "customerId": 1,
+    "itemNumber": "51030050",
+    "description": "",
+    "productId": 2,
+    "createdAt": "2026-05-06T07:48:40.449Z",
+    "updatedAt": "2026-05-06T07:48:40.449Z"
+  },
+  {
+    "id": 7,
+    "customerId": 1,
+    "itemNumber": "51030051",
+    "description": "",
+    "productId": 1,
+    "createdAt": "2026-05-07T06:42:52.207Z",
+    "updatedAt": "2026-05-07T06:42:52.207Z"
+  }
+]

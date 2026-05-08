@@ -1,0 +1,34 @@
+[
+  {
+    "id": 16,
+    "quoteId": 6,
+    "itemNumber": 1,
+    "description": "ML-301(美式三插 附护套) HPN 18/3C 尾部脱皮半剥 总长=1.75米 黑色 用纸轧带",
+    "plugPrice": 1.5,
+    "cablePrice": 3.7,
+    "length": 1.75,
+    "unit": "pcs",
+    "unitPrice": 8.03,
+    "currency": "RMB",
+    "quantity": 1,
+    "totalPrice": 8.03,
+    "createdAt": "2026-05-07T12:56:59.518Z",
+    "updatedAt": "2026-05-07T12:56:59.518Z"
+  },
+  {
+    "id": 17,
+    "quoteId": 5,
+    "itemNumber": 1,
+    "description": "ML-302(韩国) H05RR-F 3X 0.75 尾部脱皮半剥 总长=1.12米 黑色 普通导体",
+    "plugPrice": 1.95,
+    "cablePrice": 3.68,
+    "length": 1.12,
+    "unit": "pcs",
+    "unitPrice": 6.12,
+    "currency": "RMB",
+    "quantity": 1,
+    "totalPrice": 6.12,
+    "createdAt": "2026-05-08T03:54:27.063Z",
+    "updatedAt": "2026-05-08T03:54:27.063Z"
+  }
+]

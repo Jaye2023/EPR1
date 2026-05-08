@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产品详情 - 报价系统</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+body { background-color: #f8f9fa; }.detail-value { color: #212529; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="收起/展开侧边栏">
+      <i class="bi bi-chevron-left" id="toggleIcon"></i>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="bi bi-calculator"></i>
+      </div>
+      <div class="sidebar-title">报价系统</div>
+      <div class="sidebar-subtitle">Baojia System</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">主菜单</div>
+      <a class="nav-link" href="/" title="仪表盘">
+        <i class="bi bi-speedometer2"></i>
+        <span>仪表盘</span>
+      </a>
+      <a class="nav-link active" href="/products" title="产品管理">
+        <i class="bi bi-box-seam"></i>
+        <span>产品管理</span>
+      </a>
+      <a class="nav-link" href="/quotes" title="报价单管理">
+        <i class="bi bi-file-earmark-text"></i>
+        <span>报价单管理</span> 
+      </a>
+      <a class="nav-link" href="/customers" title="客户管理">
+        <i class="bi bi-people"></i>
+        <span>客户管理</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">基础数据</div>
+
+      <a class="nav-link" href="/wire-specs" title="电线规格">
+        <i class="bi bi-diagram-3"></i>
+        <span>电线规格</span>
+      </a>
+      <a class="nav-link" href="/plugs" title="插头价格">
+        <i class="bi bi-plug"></i>
+        <span>插头价格</span>
+      </a>
+      <a class="nav-link" href="/tail-processings" title="尾部处理">
+        <i class="bi bi-scissors"></i>  
+        <span>尾部处理</span>
+      </a>
+      <a class="nav-link" href="/process-cards" title="料号">
+        <i class="bi bi-file-image"></i>
+        <span>料号</span>
+      </a>
+      <a class="nav-link" href="/customer-item-numbers" title="客户料号">
+        <i class="bi bi-tag"></i>
+        <span>客户料号</span>
+      </a>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-title">系统</div>
+
+      <a class="nav-link" href="/salespersons" title="报价人管理">
+        <i class="bi bi-person-badge"></i>
+        <span>报价人管理</span>
+      </a>
+      <a class="nav-link" href="/settings" title="系统设置">
+        <i class="bi bi-gear"></i>
+        <span>系统设置</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person"></i>
+        </div>
+        <div>
+          <div class="user-name" id="sidebarUserName">管理员</div>
+          <div class="user-role" id="sidebarUserRole">系统管理</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <div class="p-4">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">首页</a></li>
+          <li class="breadcrumb-item"><a href="/products">产品管理</a></li>
+          <li class="breadcrumb-item active" aria-current="page">产品详情</li>
+        </ol>
+      </nav>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>产品详情</h2>
+          <div>
+            <a href="#" class="btn btn-outline-primary me-2" id="editBtn"><i class="bi bi-pencil me-2"></i>编辑</a>
+            <a href="/products" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>返回列表</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body p-4">
+            <div id="loadingIndicator" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status"></div>
+              <p class="mt-2 text-muted">加载中...</p>
+            </div>
+            <div id="productContent" style="display: none;">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <div class="detail-label">产品编号</div>
+                    <div class="detail-value" id="item"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">产品名称规格</div>
+                    <div class="detail-value" id="description"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">单位</div>
+                    <div class="detail-value" id="unit"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">币种</div>
+                    <div class="detail-value" id="currency"></div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-4">
+                    <div class="detail-label">插头单价 (M)</div>
+                    <div class="detail-value" id="plugPrice"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">线材单价 (M)</div>
+                    <div class="detail-value" id="cablePrice"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">长度 (M)</div>
+                    <div class="detail-value" id="length"></div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="detail-label">单价</div>
+                    <div class="detail-value" id="unitPrice"></div>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">电线规格</div>
+                    <div class="detail-value" id="wireSpec"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">电线单价</div>
+                    <div class="detail-value" id="wirePrice"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">料号</div>
+                    <div class="detail-value" id="processCard"></div>
+                    <div class="detail-value text-sm text-muted" id="processCardName"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">客户料号</div>
+                    <div class="detail-value" id="customerItemNumber"></div>
+                    <div class="detail-value text-sm text-muted" id="customerItemNumberInfo"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">尾部处理</div>
+                    <div class="detail-value" id="tailProcessing"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">尾部处理单价</div>
+                    <div class="detail-value" id="tailProcessingPrice"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">扎线</div>
+                    <div class="detail-value" id="cableTie"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">扎线单价</div>
+                    <div class="detail-value" id="cableTiePrice"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">端子护套</div>
+                    <div class="detail-value" id="terminalSleeve"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">端子护套单价</div>
+                    <div class="detail-value" id="terminalSleevePrice"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">尾部连接线</div>
+                    <div class="detail-value" id="tailWire"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">尾部连接线单价</div>
+                    <div class="detail-value" id="tailWirePrice"></div>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">铜丝单价</div>
+                    <div class="detail-value" id="copperPrice"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">胶料单价</div>
+                    <div class="detail-value" id="materialPrice"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-4">
+                    <div class="detail-label">毛利</div>
+                    <div class="detail-value" id="profitMargin"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="detail-label">备注</div>
+                <div class="detail-value" id="remarks"></div>
+              </div>
+
+              <hr>
+
+              <div class="row text-muted small">
+                <div class="col-md-6">
+                  <div>创建时间: <span id="createdAt"></span></div>
+                </div>
+                <div class="col-md-6">
+                  <div>更新时间: <span id="updatedAt"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/modalStateManager.js"></script>
+  <script>
+    const productId = window.location.pathname.split('/').filter(Boolean)[1];
+
+    async function loadProduct() {
+      try {
+        const response = await fetch(`/api/products/${productId}`);
+        if (response.ok) {
+          const p = await response.json();
+          document.getElementById('item').textContent = p.item || '-';
+          document.getElementById('description').textContent = p.description || '-';
+          document.getElementById('unit').textContent = p.unit || '-';
+          document.getElementById('currency').textContent = p.currency || '-';
+          document.getElementById('plugPrice').textContent = p.plugPrice ? '¥' + p.plugPrice.toFixed(2) : '-';
+          document.getElementById('cablePrice').textContent = p.cablePrice ? '¥' + p.cablePrice.toFixed(2) : '-';
+          document.getElementById('length').textContent = p.length ? p.length + ' M' : '-';
+          document.getElementById('unitPrice').textContent = p.unitPrice ? '¥' + p.unitPrice.toFixed(4) : '-';
+          document.getElementById('wireSpec').textContent = p.wireSpec || '-';
+          document.getElementById('wirePrice').textContent = p.wirePrice ? '¥' + p.wirePrice.toFixed(2) : '-';
+          document.getElementById('processCard').textContent = p.processCardInfo?.code || p.processCard || '-';
+          document.getElementById('processCardName').textContent = p.processCardInfo?.name || '';
+          document.getElementById('customerItemNumber').textContent = p.customerItemNumberInfo?.itemNumber || p.customerItemNumber || '-';
+          document.getElementById('customerItemNumberInfo').textContent = p.customerItemNumberInfo?.customerName || '';
+          document.getElementById('tailProcessing').textContent = p.tailProcessing || '-';
+          document.getElementById('tailProcessingPrice').textContent = p.tailProcessingPrice ? '¥' + p.tailProcessingPrice.toFixed(2) : '-';
+          document.getElementById('cableTie').textContent = p.cableTie || '-';
+          document.getElementById('cableTiePrice').textContent = p.cableTiePrice ? '¥' + p.cableTiePrice.toFixed(2) : '-';
+          document.getElementById('terminalSleeve').textContent = p.terminalSleeve || '-';
+          document.getElementById('terminalSleevePrice').textContent = p.terminalSleevePrice ? '¥' + p.terminalSleevePrice.toFixed(2) : '-';
+          document.getElementById('tailWire').textContent = p.tailWire || '-';
+          document.getElementById('tailWirePrice').textContent = p.tailWirePrice ? '¥' + p.tailWirePrice.toFixed(2) : '-';
+          document.getElementById('copperPrice').textContent = p.copperPrice ? '¥' + p.copperPrice.toFixed(2) : '-';
+          document.getElementById('materialPrice').textContent = p.materialPrice ? '¥' + p.materialPrice.toFixed(2) : '-';
+          document.getElementById('profitMargin').textContent = p.profitMargin ? p.profitMargin + '%' : '-';
+          document.getElementById('remarks').textContent = p.remarks || '-';
+          document.getElementById('createdAt').textContent = p.createdAt ? new Date(p.createdAt).toLocaleString('zh-CN') : '-';
+          document.getElementById('updatedAt').textContent = p.updatedAt ? new Date(p.updatedAt).toLocaleString('zh-CN') : '-';
+          document.getElementById('editBtn').href = `/products/${p.id}/edit`;
+          document.getElementById('loadingIndicator').style.display = 'none';
+          document.getElementById('productContent').style.display = 'block';
+        } else {
+          alert('产品未找到');
+          window.location.href = '/products';
+        }
+      } catch (error) {
+        console.error('Failed to load product:', error);
+        alert('加载失败');
+      }
+    }
+
+    initSidebarState();
+    loadProduct();
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+
+      if (sidebar.classList.contains('collapsed')) {
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+        sessionStorage.setItem('sidebarCollapsed', 'true');
+      } else {
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-left');
+        sessionStorage.setItem('sidebarCollapsed', 'false');
+      }
+    }
+
+    function initSidebarState() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const icon = document.getElementById('toggleIcon');
+      const isCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('expanded');
+        icon.classList.remove('bi-chevron-left');
+        icon.classList.add('bi-chevron-right');
+      }
+    }
+  </script>
+</body>
+</html>
+

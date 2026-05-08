@@ -1,0 +1,70 @@
+[
+  {
+    "id": 5,
+    "quoteNumber": "QT20260507002",
+    "deliveryTerm": "报价单双方确认后10-15工作天，以双方确认订单为准",
+    "shippingInfo": "报价包含从我司至贵司运费，货物交付至贵司地址 广东 省 中山 市",
+    "items": [
+      {
+        "itemNumber": 1,
+        "description": "ML-302(韩国) H05RR-F 3X 0.75 尾部脱皮半剥 总长=1.12米 黑色 普通导体",
+        "plugPrice": 1.95,
+        "cablePrice": 3.68,
+        "length": 1.12,
+        "unit": "pcs",
+        "unitPrice": 6.12,
+        "currency": "RMB",
+        "quantity": 1,
+        "totalPrice": 6.12
+      }
+    ],
+    "quoteDate": "2026-05-05",
+    "customerName": "田森",
+    "contactPerson": "覃小姐",
+    "taxRate": "13%",
+    "validityTerm": "本报价依据铜价报出，若铜价或原材料波动剧烈且本报价单未能及时签回，报价单须重新签订",
+    "salesperson": "朱建云",
+    "qualityRequirement": "产品质量无特殊备注要求以安规为准，环保符合ROHS、REACH、PAHS标准",
+    "paymentMethod": "月结 60 天（电汇）",
+    "status": "draft",
+    "customerId": 1,
+    "salespersonId": 1,
+    "shippingAddress": "",
+    "createdAt": "2026-05-07T12:21:52.292Z",
+    "updatedAt": "2026-05-08T03:54:27.062Z"
+  },
+  {
+    "id": 6,
+    "quoteNumber": "QT20260507003",
+    "quoteDate": "2026-05-07",
+    "customerId": 1,
+    "customerName": "田森",
+    "contactPerson": "覃小姐",
+    "salespersonId": 1,
+    "salesperson": "朱建云",
+    "status": "draft",
+    "paymentMethod": "月结 60 天（电汇）",
+    "deliveryTerm": "报价单双方确认后10-15工作天",
+    "shippingAddress": "",
+    "qualityRequirement": "产品质量无特殊备注要求以安规为准，环保符合ROHS、REACH、PAHS标准",
+    "taxRate": "13%",
+    "shippingInfo": "报价包含至贵司运费，货物交付至贵司地址：广东省中山市XX工业区XX路XX号",
+    "validityTerm": "本报价依据铜价 100001-104000元/吨 报出，若铜价或原材料波动剧烈且本报价单未能及时签回，报价单须重新签订",
+    "items": [
+      {
+        "itemNumber": 1,
+        "description": "ML-301(美式三插 附护套) HPN 18/3C 尾部脱皮半剥 总长=1.75米 黑色 用纸轧带",
+        "plugPrice": 1.5,
+        "cablePrice": 3.7,
+        "length": 1.75,
+        "unit": "pcs",
+        "unitPrice": 8.03,
+        "currency": "RMB",
+        "quantity": 1,
+        "totalPrice": 8.03
+      }
+    ],
+    "createdAt": "2026-05-07T12:51:55.412Z",
+    "updatedAt": "2026-05-07T12:56:59.517Z"
+  }
+]
