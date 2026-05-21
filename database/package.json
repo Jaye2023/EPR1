@@ -1,0 +1,28 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "Unified database module for SQS, ERP, SRM systems",
+  "main": "api.js",
+  "type": "module",
+  "scripts": {
+    "start": "node unified-api-server.js",
+    "migrate": "node migrate.js",
+    "init": "node config.js"
+  },
+  "keywords": [
+    "database",
+    "mysql",
+    "unified"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "html-pdf-node": "^1.0.8",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.3",
+    "xlsx": "^0.18.5"
+  }
+}
