@@ -1,4 +1,4 @@
-# 报价系统 (Meilin Quotation System)
+# 报价系统 ( Quotation System)
 
 > 企业级报价管理解决方案，整合ERP与SRM系统
 
